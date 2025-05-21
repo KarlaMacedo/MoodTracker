@@ -1,0 +1,34 @@
+import express from "express";
+import authMiddleware from "../middleware/auth.js";
+import Mood from "../models/Mood.js";
+
+const router = express.Router();
+
+//POST create
+router.post("/", authMiddleware, async (req, res) => {
+    try {
+        const { text, tag } = req.body;
+        const mood = await Mood.create({ user: req.user._id, text, tag });
+        res.status(201).json(mood);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error al guardar el registro emocional" });
+    }
+});
+
+//GET all and filter
+router.get("/", authMiddleware, async (req, res) => {
+    try {
+        const { tag, startDate, endDate } = req.query;
+        const query = { user: req.user._id };
+        if (tag) query.tag = tag;
+        if (startDate) query.createdAt.$gte = new Date(startDate);
+        if (endDate) query.createdAt.$lte = new Date(endDate);
+        if (startDate && endDate) query.createdAt = { $gte: new Date(startDate), $lte: new Date(endDate) };
+        const moods = await Mood.find(query).sort({ createdAt: -1 });
+        res.status(200).json(moods);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error al obtener los registros emocionales" });
+    }
+});
