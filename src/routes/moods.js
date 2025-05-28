@@ -1,6 +1,7 @@
 import express from "express";
 import authMiddleware from "../middleware/auth.js";
 import Mood from "../models/Mood.js";
+import ms from "ms";
 
 const router = express.Router();
 
@@ -32,3 +33,39 @@ router.get("/", authMiddleware, async (req, res) => {
         res.status(500).json({ message: "Error al obtener los registros emocionales" });
     }
 });
+
+//PUT update
+router.put("/:id", authMiddleware, async (req, res) => {
+    try {
+        const { text, tag } = req.body;
+        const updateMood = await Mood.findOneAndUpdate(
+            { user: req.user._id, _id: req.params.id },
+            { text, tag }, { new: true }
+        );
+
+        if (!updateMood) {
+            return res.status(404).json({ message: "Registro emocional no encontrado" });
+        }
+
+        res.status(200).json(updateMood);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error al actualizar el registro emocional" });
+    }
+});
+
+//DELETE delete
+router.delete("/:id", authMiddleware, async (req, res) => {
+    try {
+        const deleteMood = await Mood.findOneAndDelete({ user: req.user._id, _id: req.params.id });
+        if (!deleteMood) {
+            return res.status(404).json({ message: "Registro emocional no encontrado" });
+        }
+        res.status(200).json({ msg: "Registro emocional eliminado" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Error al eliminar el registro emocional" });
+    }
+});
+
+export default router;
