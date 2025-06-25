@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
-        next();
+        return next();
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -30,8 +30,8 @@ userSchema.pre("save", async function (next) {
     next();
 });
 
-userSchema.methods.matchPassword = async function (password) {
-    return await bcrypt.compare(password, this.password);
+userSchema.methods.comparePassword = async function (candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
 };
 
 export default mongoose.model("User", userSchema);
