@@ -4,15 +4,21 @@ import dotenv from 'dotenv';
 import authRoutes from './src/routes/auth.js';
 import moodRoutes from './src/routes/moods.js';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 
-dotenv.config();
+dotenv.config({ 
+    path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env'
+});
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const swaggerDocument = YAML.load('./docs/swagger.yaml');
 
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Routes
 app.use('/api/auth', authRoutes);
