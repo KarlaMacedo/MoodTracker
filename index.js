@@ -1,8 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import authRoutes from './routes/auth.js';
-import moodRoutes from './routes/mood.js';
+import authRoutes from './src/routes/auth.js';
+import moodRoutes from './src/routes/moods.js';
 import cors from 'cors';
 
 dotenv.config();
@@ -18,18 +18,22 @@ app.use(cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/mood', moodRoutes);
 
-// Connect to MongoDB
-mongoose
-    .connect(process.env.MONGODB_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
-    .then(() => {
-        console.log('Connected to MongoDB');
-        app.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
+if (process.env.NODE_ENV !== "test") {
+    // Connect to MongoDB
+    mongoose
+        .connect(process.env.MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        })
+        .then(() => {
+            console.log('Connected to MongoDB');
+            app.listen(PORT, () => {
+                console.log(`Server running on port ${PORT}`);
+            });
+        })
+        .catch((error) => {
+            console.error('Error connecting to MongoDB:', error);
         });
-    })
-    .catch((error) => {
-        console.error('Error connecting to MongoDB:', error);
-    });
+}
+
+export default app;
