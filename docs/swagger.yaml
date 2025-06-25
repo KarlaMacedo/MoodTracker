@@ -1,0 +1,196 @@
+openapi: 3.0.3
+info:
+  title: MoodTracker API
+  version: 1.0.0
+  description: API para el seguimiento emocional
+
+servers:
+  - url: http://localhost:5000
+    description: Local Server
+
+paths:
+  /api/auth/register:
+    post:
+      summary: Registrar un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, email, password]
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        201:
+          description: Usuario registrado con éxito
+        400:
+          description: El usuario ya existe
+        500:
+          description: Error del servidor
+
+  /api/auth/login:
+    post:
+      summary: Iniciar sesión
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: Sesión iniciada con éxito
+        401:
+          description: Credenciales inválidas
+        500:
+          description: Error del servidor
+
+  /api/mood:
+    post:
+      summary: Registrar un nuevo registro emocional
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text, username]
+              properties:
+                username:
+                  type: string
+                text:
+                  type: string
+                tag:
+                  type: string
+      responses:
+        201:
+          description: Registro emocional registrado con éxito
+        500:
+          description: Error del servidor
+
+  /api/mood:
+    get:
+      summary: Obtener todos los registros emocionales
+      parameters:
+        - name: tag
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: startDate
+          in: query
+          required: false
+          schema:
+            type: date
+        - name: endDate
+          in: query
+          required: false
+          schema:
+            type: date
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        200:
+          description: Registros emocionales obtenidos con éxito
+        500:
+          description: Error del servidor
+  
+  /api/mood/{id}:
+    put:
+      summary: Actualizar un registro emocional
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: 
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [text, tag]
+              properties:
+                text:
+                  type: string
+                tag:
+                  type: string
+      responses:
+        200:
+          description: Registro emocional actualizado con éxito
+        404:
+          description: Registro emocional no encontrado
+        500:
+          description: Error del servidor
+
+    delete:
+      summary: Eliminar un registro emocional
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: 
+            type: string
+      responses:
+        200:
+          description: Registro emocional eliminado con éxito
+        404:
+          description: Registro emocional no encontrado
+        500:
+          description: Error del servidor
+  
+  components:
+    securitySchemes:
+      bearerAuth:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+
+    schemas:
+      User:
+        type: object
+        required: [username, email, password]
+        properties:
+          username:
+            type: string
+          email:
+            type: string
+          password:
+            type: string
+
+      Mood:
+        type: object
+        required: [text, username]
+        properties:
+          text:
+            type: string
+          username:
+            type: string
+          tag:
+            type: string
+          createdAt:
+            type: date-time
+
+security:
+  - bearerAuth: []
