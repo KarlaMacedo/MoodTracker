@@ -80,7 +80,6 @@ paths:
         500:
           description: Error del servidor
 
-  /api/mood:
     get:
       summary: Obtener todos los registros emocionales
       parameters:
