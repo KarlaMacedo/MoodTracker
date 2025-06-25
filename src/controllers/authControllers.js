@@ -9,12 +9,13 @@ export const register = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: "El usuario ya existe" });
         }
-        const hashedPassword = await bcrypt.hash(password, 10);
+
         const user = await User.create({
             username,
             email,
-            password: hashedPassword,
+            password,
         });
+        
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
         res.status(201).json({ token, user: { id: user._id, username: user.username, email: user.email  } });
     } catch (error) {
