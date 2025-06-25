@@ -14,7 +14,7 @@ let token;
 let moodId;
 
 beforeAll(async () => {
-  await mongoose.connect(process.env.MONGODB_URI_TEST);
+    await mongoose.connect(process.env.MONGODB_URI_TEST);
     const password = await bcrypt.hash("testpassword", 10);
     const user = await User.create({ username: "TestUser", email: "test@example.com", password });
     token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
@@ -37,24 +37,25 @@ describe("Mood endpoints", () => {
         moodId = response.body._id;
     });
 
-    it ("debería obtener todos los registros emocionales del usuario", async () => {
+    it("debería obtener todos los registros emocionales del usuario", async () => {
         const response = await request(app)
             .get(`${API}`)
             .set("Authorization", `Bearer ${token}`);
         expect(response.statusCode).toBe(200);
-        expect(Array.isArray(response.body)).toBe(true);
-        expect(response.body.length).toBeGreaterThan(0);
+        expect(Array.isArray(response.body.moods)).toBe(true);
+        expect(response.body.moods.length).toBeGreaterThan(0);
+        expect(response.body.pagination).toBeDefined();
     });
 
-    it ("debería filtrar los registros emocionales por tag", async () => {
+    it("debería filtrar los registros emocionales por tag", async () => {
         const response = await request(app)
             .get(`${API}?tag=Trabajo`)
             .set("Authorization", `Bearer ${token}`);
         expect(response.statusCode).toBe(200);
-        expect(response.body[0].tag).toBe("Trabajo");
+        expect(response.body.moods[0].tag).toBe("Trabajo");
     });
 
-    it ("debería actualizar un registro emocional", async () => {
+    it("debería actualizar un registro emocional", async () => {
         const response = await request(app)
             .put(`${API}/${moodId}`)
             .set("Authorization", `Bearer ${token}`)
@@ -64,7 +65,7 @@ describe("Mood endpoints", () => {
         expect(response.body.tag).toBe("Familia");
     });
 
-    it ("debería eliminar un registro emocional", async () => {
+    it("debería eliminar un registro emocional", async () => {
         const response = await request(app)
             .delete(`${API}/${moodId}`)
             .set("Authorization", `Bearer ${token}`);
