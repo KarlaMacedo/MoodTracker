@@ -1,33 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import api from "./api.js";
+import { useEffect, useRef } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const ranEffect = useRef(false);
+
+  useEffect(() => {
+    if (ranEffect.current) return;
+    ranEffect.current = true;
+    const doLogin = async () => {
+      try {
+        const res = await api.post("/auth/login", {
+          email: "cei@correo.com",
+          password: "password"
+        });
+        localStorage.setItem("token", res.data.token);
+        console.log("Login exitoso");
+
+        const moodNew = await api.post("/mood", {
+          text: "Estoy triste",
+          tag: "Familia"
+        });
+        console.log("Mood creado:", moodNew.data);
+
+        const moodsRes = await api.get("/mood");
+        console.log("Moods:", moodsRes.data);
+      } catch (err) {
+        console.error("Error:", err.response?.data || err.message);
+      }
+    };
+
+    doLogin();
+  }, []);
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <h1>Mood Tracker</h1>
+        <p>Abre la consola para ver login y los registros emocionales (si hay token)</p>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
