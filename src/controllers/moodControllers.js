@@ -15,10 +15,24 @@ export const getMoods = async (req, res) => {
     try {
         const { tag, startDate, endDate, page = 1, limit = 10 } = req.query;
         const query = { user: req.user._id };
+        console.log(req.query);
         if (tag) query.tag = tag;
-        if (startDate) query.createdAt.$gte = new Date(startDate);
-        if (endDate) query.createdAt.$lte = new Date(endDate);
-        if (startDate && endDate) query.createdAt = { $gte: new Date(startDate), $lte: new Date(endDate) };
+        const offsetHours = 6;
+        if (startDate || endDate) {
+            query.createdAt = {};
+            if (startDate) {
+                const start = new Date(startDate);
+                start.setUTCHours(0 + offsetHours, 0, 0, 0);
+                query.createdAt.$gte = new Date(start);
+            }
+
+            if (endDate) {
+                const end = new Date(endDate);
+                end.setUTCHours(23 + offsetHours, 59, 59, 999);
+                query.createdAt.$lte = new Date(end);
+            }
+        }
+        console.log(query, "queryfinal");
 
         const skip = (parseInt(page) - 1) * parseInt(limit);
         const [total, moods] = await Promise.all([
@@ -35,6 +49,8 @@ export const getMoods = async (req, res) => {
                 perPage: parseInt(limit)
             }
         });
+
+        console.log(moods);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Error al obtener los registros emocionales" });
