@@ -29,13 +29,20 @@ const Dashboard = () => {
 
   const fetchMoods = useCallback(async () => {
   try {
+    console.log("📅 Filtros enviados:", {
+      tag: filters.tag,
+      startDate: filters.startDate,
+      endDate: filters.endDate,
+      page: pagination.currentPage
+    });
+
     const { data } = await api.get("/mood", {
       params: {
         tag: filters.tag,
         startDate: filters.startDate,
         endDate: filters.endDate,
         page: pagination.currentPage,
-        limit: 5,
+        limit: 10,
       },
     });
 

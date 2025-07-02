@@ -25,7 +25,6 @@ const MoodFilters = ({ onFilter }) => {
         <option value="Trabajo">Trabajo</option>
         <option value="Familia">Familia</option>
         <option value="Salud">Salud</option>
-        
         <option value="Otros">Otros</option>
         <option value="Amigos">Amigos</option>
         <option value="Amor">Amor</option>
