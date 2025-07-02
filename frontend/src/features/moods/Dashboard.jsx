@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import api from "../../api/api";
 import MoodList from "./MoodList";
 import MoodFilters from "./MoodFilters";
@@ -24,31 +24,31 @@ const Dashboard = () => {
     setTimeout(() => setAlert(null), 4000);
   };
 
-  const fetchMoods = async () => {
-    try {
-      const { data } = await api.get("/mood", {
-        params: {
-          tag: filters.tag,
-          startDate: filters.startDate,
-          endDate: filters.endDate,
-          page: pagination.currentPage,
-          limit: 5,
-        },
-      });
+  const fetchMoods = useCallback(async () => {
+  try {
+    const { data } = await api.get("/mood", {
+      params: {
+        tag: filters.tag,
+        startDate: filters.startDate,
+        endDate: filters.endDate,
+        page: pagination.currentPage,
+        limit: 5,
+      },
+    });
 
-      setMoods(data.moods);
-      setPagination((prev) => ({
-        ...prev,
-        totalPages: data.pagination.totalPages,
-      }));
-    } catch (err) {
-      console.error("Error al obtener moods:", err.response?.data || err.message);
-    }
-  };
+    setMoods(data.moods);
+    setPagination((prev) => ({
+      ...prev,
+      totalPages: data.pagination.totalPages,
+    }));
+  } catch (err) {
+    console.error("Error al obtener moods:", err.response?.data || err.message);
+  }
+}, [filters, pagination.currentPage]);
 
-  useEffect(() => {
-    fetchMoods();
-  }, [filters, pagination.currentPage]);
+useEffect(() => {
+  fetchMoods();
+}, [fetchMoods]);
 
   const handleMoodAdded = () => {
     showAlert("Mood creado exitosamente");
