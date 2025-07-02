@@ -2,13 +2,16 @@ import { useEffect, useState, useCallback } from "react";
 import api from "../../api/api";
 import MoodList from "./MoodList";
 import MoodFilters from "./MoodFilters";
-import AddMood from "./AddMood";
 import Navbar from "../../components/Navbar";
 import Alert from "../../components/Alert";
+import DeleteMoodModal from "../../components/modals/DeleteMoodModal";
+import MoodFormModal from "../../components/modals/MoodFormModal";
 
 const Dashboard = () => {
   const [alert, setAlert] = useState(null);
   const [moods, setMoods] = useState([]);
+  const [editingMood, setEditingMood] = useState(null);
+  const [deletingMoodId, setDeletingMoodId] = useState(null);
   const [pagination, setPagination] = useState({
     currentPage: 1,
     totalPages: 1,
@@ -50,37 +53,32 @@ useEffect(() => {
   fetchMoods();
 }, [fetchMoods]);
 
-  const handleMoodAdded = () => {
-    showAlert("Mood creado exitosamente");
+  const handleMoodEdited = (mood) => {
+    setEditingMood(mood);
+  };
+
+  const handleSaveMood = (isEdit) => {
     fetchMoods();
+    showAlert(isEdit ? "Mood editado correctamente" : "Mood creado exitosamente");
   };
 
-  const handleMoodEdited = async (mood) => {
-    const newText = prompt("Edita el texto del mood:", mood.text);
-    const newTag = prompt("Edita la categoría:", mood.tag || "");
-    if (newText && newTag) {
-      try {
-        await api.put(`/mood/${mood._id}`, { text: newText, tag: newTag });
-        showAlert("Mood editado correctamente");
-        fetchMoods();
-      } catch (err) {
-        console.error("Error al obtener moods:", err.response?.data || err.message);
-        showAlert("Error al editar mood", "error");
-      }
-    }
-  };
 
-  const handleMoodDeleted = async (id) => {
-    if (!confirm("¿Seguro que deseas eliminar este mood?")) return;
+  const handleConfirmDelete = async (id) => {
     try {
       await api.delete(`/mood/${id}`);
-      showAlert("Mood eliminado correctamente", "warning");
+      setDeletingMoodId(null);
       fetchMoods();
+      showAlert("Mood eliminado correctamente", "warning");
+      setPagination((prev) => ({ ...prev }));
     } catch (err) {
-      console.error("Error al obtener moods:", err.response?.data || err.message);
-      showAlert("Error al eliminar mood", "error");
+      console.error("Error al eliminar mood:", err);
     }
   };
+
+  const handleMoodDeleted = (id) => {
+    setDeletingMoodId(id);
+  };
+
 
   const handleFilter = (newFilters) => {
     setFilters(newFilters);
@@ -101,7 +99,13 @@ useEffect(() => {
 
         <div className="max-w-xl mx-auto mt-8 px-4">
           <h2 className="text-2xl font-bold mb-4">Registrar nuevo mood</h2>
-          <AddMood onMoodAdded={handleMoodAdded} />
+          <button
+            className="btn btn-primary mb-4"
+            onClick={() => setEditingMood({ text: "", tag: "Sin clasificar" })}
+          >
+            Agregar emoción
+          </button>
+
 
           <h3 className="text-xl font-semibold mt-8 mb-2">Filtros</h3>
           <MoodFilters onFilter={handleFilter} />
@@ -135,6 +139,23 @@ useEffect(() => {
           </div>
         </div>
       </div>
+
+      {editingMood && (
+        <MoodFormModal
+          mood={editingMood}
+          onClose={() => setEditingMood(null)}
+          onSaved={(isEdit) => handleSaveMood(isEdit)}
+        />
+      )}
+
+
+      {deletingMoodId && (
+        <DeleteMoodModal
+          moodId={deletingMoodId}
+          onCancel={() => setDeletingMoodId(null)}
+          onConfirm={handleConfirmDelete}
+        />
+      )}
     </>
   );
 };
