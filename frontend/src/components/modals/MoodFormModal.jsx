@@ -1,62 +1,71 @@
-// src/components/modals/MoodFormModal.jsx
 import { useState, useEffect } from "react";
-import api from "../../api/api";
 
-const MoodFormModal = ({ mood, onClose, onSaved }) => {
-  const isEdit = Boolean(mood._id);
-  const [text, setText] = useState(mood.text || "");
-  const [tag, setTag] = useState(mood.tag || "Sin clasificar");
+const MoodFormModal = ({ mood, onSaved, onClose }) => {
+  const [text, setText] = useState(mood?.text || "");
+  const [tag, setTag] = useState(mood?.tag || "Sin clasificar");
 
   useEffect(() => {
-    setText(mood.text || "");
-    setTag(mood.tag || "Sin clasificar");
+    setText(mood?.text || "");
+    setTag(mood?.tag || "Sin clasificar");
   }, [mood]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      if (isEdit) {
-        await api.put(`/mood/${mood._id}`, { text, tag });
-      } else {
-        await api.post("/mood", { text, tag });
-      }
-      onSaved(isEdit); // refetch moods
-      onClose();
-    } catch (err) {
-      console.error("Error guardando mood:", err.response?.data || err.message);
-    }
+    if (!text.trim()) return;
+
+    const moodToSave = {
+      ...mood,
+      text: text.trim(),
+      tag,
+    };
+
+    onSaved(moodToSave);
   };
 
   return (
     <dialog className="modal modal-open">
       <div className="modal-box">
-        <h3 className="font-bold text-lg mb-2">{isEdit ? "Editar mood" : "Nuevo mood"}</h3>
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <textarea
-            className="textarea textarea-bordered w-full"
-            placeholder="¿Cómo te sientes?"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            required
-          />
-          <select className="select select-bordered w-full" value={tag} onChange={(e) => setTag(e.target.value)}>
-            <option>Sin clasificar</option>
-            <option>Otros</option>
-            <option>Trabajo</option>
-            <option>Familia</option>
-            <option>Salud</option>
-            <option>Amigos</option>
-            <option>Amor</option>
-            <option>Finanzas</option>
-            <option>Estudio</option>
-          </select>
-          <div className="modal-action">
-            <button type="submit" className="btn btn-primary">
-              {isEdit ? "Guardar cambios" : "Crear mood"}
-            </button>
-            <button type="button" className="btn" onClick={onClose}>Cancelar</button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div className="bg-base-100 p-6 rounded-lg w-full max-w-md shadow-lg">
+            <h3 className="text-xl font-bold mb-4">
+              {mood?._id ? "Editar emoción" : "Nueva emoción"}
+            </h3>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              <input
+                type="text"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                className="input input-bordered"
+                placeholder="¿Cómo te sientes?"
+                required
+              />
+              <select
+                value={tag}
+                onChange={(e) => setTag(e.target.value)}
+                className="select select-bordered"
+              >
+                <option>Sin clasificar</option>
+                <option>Trabajo</option>
+                <option>Familia</option>
+                <option>Salud</option>
+                <option>Amigos</option>
+                <option>Amor</option>
+                <option>Finanzas</option>
+                <option>Estudio</option>
+                <option>Otros</option>
+              </select>
+
+              <div className="flex justify-end gap-2 mt-4">
+                <button type="button" onClick={onClose} className="btn btn-ghost">
+                  Cancelar
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  {mood?._id ? "Guardar cambios" : "Agregar"}
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </dialog>
   );
