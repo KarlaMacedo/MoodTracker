@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import api from "../../api/api";
 import MoodList from "./MoodList";
 import MoodFilters from "./MoodFilters";
-import AddMood from "./AddMood";
 import Navbar from "../../components/Navbar";
 import Alert from "../../components/Alert";
+import { useModal } from "../../context/ModalContext";
 
 const Dashboard = () => {
   const [alert, setAlert] = useState(null);
@@ -19,12 +19,14 @@ const Dashboard = () => {
     endDate: "",
   });
 
+  const { openModal } = useModal();
+
   const showAlert = (message, type = "success") => {
     setAlert({ message, type });
     setTimeout(() => setAlert(null), 4000);
   };
 
-  const fetchMoods = async () => {
+  const fetchMoods = useCallback(async () => {
     try {
       const { data } = await api.get("/mood", {
         params: {
@@ -44,42 +46,34 @@ const Dashboard = () => {
     } catch (err) {
       console.error("Error al obtener moods:", err.response?.data || err.message);
     }
-  };
+  }, [filters, pagination.currentPage]);
 
   useEffect(() => {
     fetchMoods();
-  }, [filters, pagination.currentPage]);
+  }, [fetchMoods]);
 
-  const handleMoodAdded = () => {
-    showAlert("Mood creado exitosamente");
-    fetchMoods();
-  };
-
-  const handleMoodEdited = async (mood) => {
-    const newText = prompt("Edita el texto del mood:", mood.text);
-    const newTag = prompt("Edita la categoría:", mood.tag || "");
-    if (newText && newTag) {
-      try {
-        await api.put(`/mood/${mood._id}`, { text: newText, tag: newTag });
-        showAlert("Mood editado correctamente");
-        fetchMoods();
-      } catch (err) {
-        console.error("Error al obtener moods:", err.response?.data || err.message);
-        showAlert("Error al editar mood", "error");
-      }
-    }
-  };
-
-  const handleMoodDeleted = async (id) => {
-    if (!confirm("¿Seguro que deseas eliminar este mood?")) return;
-    try {
-      await api.delete(`/mood/${id}`);
-      showAlert("Mood eliminado correctamente", "warning");
+  const handleAddMood = () => {
+    openModal("add", { text: "", tag: "Sin clasificar" }, async (newMood) => {
+      await api.post("/mood", newMood);
       fetchMoods();
-    } catch (err) {
-      console.error("Error al obtener moods:", err.response?.data || err.message);
-      showAlert("Error al eliminar mood", "error");
-    }
+      showAlert("Mood creado exitosamente");
+    });
+  };
+
+  const handleMoodEdited = (mood) => {
+    openModal("edit", mood, async (updatedMood) => {
+      await api.put(`/mood/${updatedMood._id}`, updatedMood);
+      fetchMoods();
+      showAlert("Mood editado correctamente");
+    });
+  };
+
+  const handleMoodDeleted = (id) => {
+    openModal("delete", id, async () => {
+      await api.delete(`/mood/${id}`);
+      fetchMoods();
+      showAlert("Mood eliminado correctamente", "warning");
+    });
   };
 
   const handleFilter = (newFilters) => {
@@ -101,17 +95,15 @@ const Dashboard = () => {
 
         <div className="max-w-xl mx-auto mt-8 px-4">
           <h2 className="text-2xl font-bold mb-4">Registrar nuevo mood</h2>
-          <AddMood onMoodAdded={handleMoodAdded} />
+          <button className="btn btn-primary mb-4" onClick={handleAddMood}>
+            Agregar emoción
+          </button>
 
           <h3 className="text-xl font-semibold mt-8 mb-2">Filtros</h3>
           <MoodFilters onFilter={handleFilter} />
 
           <h3 className="text-xl font-semibold mt-8 mb-2">Tus moods</h3>
-          <MoodList
-            moods={moods}
-            onEdit={handleMoodEdited}
-            onDelete={handleMoodDeleted}
-          />
+          <MoodList moods={moods} onEdit={handleMoodEdited} onDelete={handleMoodDeleted} />
 
           <div className="mt-4 flex justify-between">
             <button
