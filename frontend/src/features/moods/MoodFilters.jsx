@@ -26,12 +26,12 @@ const MoodFilters = ({ onFilter }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col md:flex-row gap-5 bg-base-200 p-4 rounded-lg shadow mt-4"
+      className="flex items-center flex-col lg:flex-row gap-5 bg-base-200 p-4 rounded-lg shadow mt-4"
     >
       <select
         value={tag}
         onChange={(e) => setTag(e.target.value)}
-        className="select select-bordered w-full md:w-auto"
+        className="select select-bordered w-full lg:w-auto"
       >
         <option value="">Todos los tags</option>
         <option value="Trabajo">Trabajo</option>
@@ -49,7 +49,7 @@ const MoodFilters = ({ onFilter }) => {
         type="date"
         value={startDate}
         onChange={(e) => setStartDate(e.target.value)}
-        className="input input-bordered w-full md:w-auto"
+        className="input input-bordered w-full lg:w-auto"
         max={today}
         // Evita seleccionar fin menor a inicio
       />
@@ -58,18 +58,18 @@ const MoodFilters = ({ onFilter }) => {
         type="date"
         value={endDate}
         onChange={(e) => setEndDate(e.target.value)}
-        className="input input-bordered w-full md:w-auto"
+        className="input input-bordered w-full lg:w-auto"
         min={startDate || undefined}
         max={today}
       />
 
-      <button type="submit" className="btn btn-primary w-full md:w-auto">
-        Filtrar
+      <button type="submit" className="btn btn-primary w-full lg:w-auto">
+        Filtrar Registros
       </button>
       <button
         type="button"
         onClick={clearFilters}
-        className="btn btn-wide btn-outline w-full md:w-auto"
+        className="btn btn-outline w-full lg:w-auto"
       >
         Limpiar Filtros
       </button>

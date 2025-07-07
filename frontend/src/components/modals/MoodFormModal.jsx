@@ -25,20 +25,23 @@ const MoodFormModal = ({ mood, onSaved, onClose }) => {
   return (
     <dialog className="modal modal-open">
       <div className="modal-box">
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500/50">
           <div className="bg-base-100 p-6 rounded-lg w-full max-w-md shadow-lg">
-            <h3 className="text-xl font-bold mb-4">
-              {mood?._id ? "Editar emoción" : "Nueva emoción"}
-            </h3>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-              <input
-                type="text"
+              <p className="text-xl font-bold mb-4">
+                {mood?._id ? "Editar emoción:" : "Nueva emoción:"}
+              </p>
+              <textarea
+                type="textarea"
                 value={text}
                 onChange={(e) => setText(e.target.value)}
-                className="input input-bordered"
+                className="textarea textarea-bordered mt-4 h-full "
                 placeholder="¿Cómo te sientes?"
                 required
-              />
+              ></textarea>
+              <p className="text-xl font-bold mb-4">
+                Tag:
+              </p>
               <select
                 value={tag}
                 onChange={(e) => setTag(e.target.value)}
@@ -56,7 +59,7 @@ const MoodFormModal = ({ mood, onSaved, onClose }) => {
               </select>
 
               <div className="flex justify-end gap-2 mt-4">
-                <button type="button" onClick={onClose} className="btn btn-ghost">
+                <button type="button" onClick={onClose} className="btn btn-outline">
                   Cancelar
                 </button>
                 <button type="submit" className="btn btn-primary">

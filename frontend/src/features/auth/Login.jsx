@@ -24,9 +24,13 @@ function Login({ onLoginSuccess }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200">
       <div className="w-full max-w-sm p-6 bg-white rounded-xl shadow-xl">
-        <h2 className="text-2xl font-bold mb-4 text-center text-primary">Iniciar sesión</h2>
+        
         {errorMsg && <div className="alert alert-error mb-4">{errorMsg}</div>}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4  mb-4">
+          <p className="text-2xl font-bold mb-4 text-center text-primary">Iniciar sesión</p>
+          <p className="text-xl font-bold mb-4">
+            Correo:
+          </p>
           <input
             type="email"
             placeholder="Correo electrónico"
@@ -35,6 +39,9 @@ function Login({ onLoginSuccess }) {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+          <p className="text-xl font-bold mb-4">
+            Contraseña:
+          </p>
           <input
             type="password"
             placeholder="Contraseña"
@@ -43,12 +50,12 @@ function Login({ onLoginSuccess }) {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit" className="btn btn-primary w-full">
+          <button type="submit" className="btn btn-primary btn-lg w-full mt-8!">
             Iniciar sesión
           </button>
         </form>
         <p className="mt-4 text-center text-sm">
-          ¿No tienes cuenta? <Link to="/register" className="text-primary underline">Regístrate</Link>
+          ¿No tienes cuenta? <Link to="/register" className="text-primary hover:underline font-bold">Regístrate</Link>
         </p>
       </div>
     </div>

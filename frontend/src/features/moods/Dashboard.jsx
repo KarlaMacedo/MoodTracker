@@ -91,10 +91,12 @@ const Dashboard = () => {
 
       <Navbar />
       <div className="p-6 mx-auto">
-        <div class="grid grid-cols-6 gap-4">
-          <p className="text-2xl font-bold text-center mb-4 col-span-5">Mis registros emocionales</p>
-          <div>
-            <button className="btn btn-primary mb-4" onClick={handleAddMood}>
+        <div class="flex md:flex-row max-sm:flex-col items-center max-sm:gap-4">
+          <div className="basis-5/6">
+            <p className="text-2xl font-bold text-center">Tus registros emocionales <span className="text-yellow-500 text-2xl">⭐</span></p>
+          </div>
+          <div className="basis-1/6 ml-5 flex justify-end max-sm:justify-center">
+            <button className="btn btn-primary" onClick={handleAddMood}>
               Agregar emoción
             </button>
           </div>
@@ -105,7 +107,6 @@ const Dashboard = () => {
 
           <MoodFilters onFilter={handleFilter} />
 
-          <p className="text-xl font-semibold mt-8 mb-2">Tus registros emocionales</p>
           <MoodList moods={moods} onEdit={handleMoodEdited} onDelete={handleMoodDeleted} />
 
           <div className="mt-4 flex justify-between">

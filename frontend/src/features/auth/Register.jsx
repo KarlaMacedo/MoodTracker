@@ -31,9 +31,13 @@ function Register({ onRegisterSuccess }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200">
       <div className="w-full max-w-sm p-6 bg-white rounded-xl shadow-xl">
-        <h2 className="text-2xl font-bold mb-4 text-primary text-center">Registro</h2>
+        
         {errorMsg && <div className="alert alert-error mb-4">{errorMsg}</div>}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4  mb-4">
+          <p className="text-2xl font-bold mb-4 text-primary text-center">Registro</p>
+          <p className="text-xl font-bold mb-4">
+            Nombre:
+          </p>
           <input
             type="text"
             name="username"
@@ -43,6 +47,9 @@ function Register({ onRegisterSuccess }) {
             onChange={handleChange}
             required
           />
+          <p className="text-xl font-bold mb-4">
+            Correo:
+          </p>
           <input
             type="email"
             name="email"
@@ -52,6 +59,9 @@ function Register({ onRegisterSuccess }) {
             onChange={handleChange}
             required
           />
+          <p className="text-xl font-bold mb-4">
+            Contraseña:
+          </p>
           <input
             type="password"
             name="password"
@@ -62,12 +72,12 @@ function Register({ onRegisterSuccess }) {
             required
             minLength={6}
           />
-          <button type="submit" className={`btn btn-primary w-full ${loading ? "loading" : ""}`} disabled={loading}>
+          <button type="submit" className={`btn btn-primary btn-lg mt-8! w-full ${loading ? "loading" : ""}`} disabled={loading}>
             {loading ? "Registrando..." : "Registrarse"}
           </button>
         </form>
         <p className="mt-4 text-center text-sm">
-          ¿Ya tienes cuenta? <Link to="/login" className="text-primary underline">Inicia sesión</Link>
+          ¿Ya tienes cuenta? <Link to="/login" className="text-primary hover:underline font-bold">Inicia sesión</Link>
         </p>
       </div>
     </div>
