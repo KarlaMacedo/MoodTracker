@@ -26,7 +26,7 @@ const MoodFilters = ({ onFilter }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col md:flex-row gap-3 bg-base-200 p-4 rounded-lg shadow mt-4"
+      className="flex flex-col md:flex-row gap-5 bg-base-200 p-4 rounded-lg shadow mt-4"
     >
       <select
         value={tag}
@@ -69,9 +69,9 @@ const MoodFilters = ({ onFilter }) => {
       <button
         type="button"
         onClick={clearFilters}
-        className="btn btn-ghost w-full md:w-auto"
+        className="btn btn-wide btn-outline w-full md:w-auto"
       >
-        Limpiar
+        Limpiar Filtros
       </button>
     </form>
   );

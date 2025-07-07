@@ -34,7 +34,7 @@ const Dashboard = () => {
           startDate: filters.startDate,
           endDate: filters.endDate,
           page: pagination.currentPage,
-          limit: 5,
+          limit: 6,
         },
       });
 
@@ -44,7 +44,7 @@ const Dashboard = () => {
         totalPages: data.pagination.totalPages,
       }));
     } catch (err) {
-      console.error("Error al obtener moods:", err.response?.data || err.message);
+      console.error("Error al obtener registros emocionales:", err.response?.data || err.message);
     }
   }, [filters, pagination.currentPage]);
 
@@ -56,7 +56,7 @@ const Dashboard = () => {
     openModal("add", { text: "", tag: "Sin clasificar" }, async (newMood) => {
       await api.post("/mood", newMood);
       fetchMoods();
-      showAlert("Mood creado exitosamente");
+      showAlert("Registro emocional creado exitosamente");
     });
   };
 
@@ -64,7 +64,7 @@ const Dashboard = () => {
     openModal("edit", mood, async (updatedMood) => {
       await api.put(`/mood/${updatedMood._id}`, updatedMood);
       fetchMoods();
-      showAlert("Mood editado correctamente");
+      showAlert("Registro emocional editado correctamente");
     });
   };
 
@@ -72,7 +72,7 @@ const Dashboard = () => {
     openModal("delete", id, async () => {
       await api.delete(`/mood/${id}`);
       fetchMoods();
-      showAlert("Mood eliminado correctamente", "warning");
+      showAlert("Registro emocional eliminado correctamente", "warning");
     });
   };
 
@@ -90,19 +90,22 @@ const Dashboard = () => {
       )}
 
       <Navbar />
-      <div className="p-4 max-w-3xl mx-auto">
-        <h1 className="text-2xl font-bold text-center mb-4">Mis registros emocionales</h1>
+      <div className="p-6 mx-auto">
+        <div class="grid grid-cols-6 gap-4">
+          <p className="text-2xl font-bold text-center mb-4 col-span-5">Mis registros emocionales</p>
+          <div>
+            <button className="btn btn-primary mb-4" onClick={handleAddMood}>
+              Agregar emoción
+            </button>
+          </div>
+        </div>
+        <div className="mx-auto mt-8 px-4">
+          
 
-        <div className="max-w-xl mx-auto mt-8 px-4">
-          <h2 className="text-2xl font-bold mb-4">Registrar nuevo mood</h2>
-          <button className="btn btn-primary mb-4" onClick={handleAddMood}>
-            Agregar emoción
-          </button>
 
-          <h3 className="text-xl font-semibold mt-8 mb-2">Filtros</h3>
           <MoodFilters onFilter={handleFilter} />
 
-          <h3 className="text-xl font-semibold mt-8 mb-2">Tus moods</h3>
+          <p className="text-xl font-semibold mt-8 mb-2">Tus registros emocionales</p>
           <MoodList moods={moods} onEdit={handleMoodEdited} onDelete={handleMoodDeleted} />
 
           <div className="mt-4 flex justify-between">

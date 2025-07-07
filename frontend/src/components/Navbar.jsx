@@ -12,10 +12,11 @@ const Navbar = () => {
   return (
     <div className="navbar bg-base-200 px-4">
       <div className="flex-1">
-        <Link to="/dashboard" className="btn btn-ghost text-xl">MoodTracker</Link>
+        <Link to="/dashboard" className="btn btn-ghost text-xl text-primary">
+          ⭐ MoodTracker
+        </Link>
       </div>
-      <div className="flex gap-2">
-        <Link to="/dashboard" className="btn btn-sm btn-outline">Dashboard</Link>
+      <div>
         <button onClick={handleLogout} className="btn btn-sm btn-error">Cerrar sesión</button>
       </div>
     </div>
