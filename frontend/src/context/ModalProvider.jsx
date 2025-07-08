@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ModalContext } from "./ModalContext";
 import DeleteMoodModal from "../components/modals/DeleteMoodModal";
 import MoodFormModal from "../components/modals/MoodFormModal";
+import ViewMoodModal from "../components/modals/ViewMoodModal";
 
 const ModalProvider = ({ children }) => {
   const [modal, setModal] = useState(null);
@@ -36,6 +37,13 @@ const ModalProvider = ({ children }) => {
               if (modal.onConfirm) await modal.onConfirm();
               closeModal();
             }}
+          />
+        );
+      case "view":
+        return (
+          <ViewMoodModal
+            mood={modal.data}
+            onClose={closeModal}
           />
         );
       default:
