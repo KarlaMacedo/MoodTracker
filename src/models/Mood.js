@@ -12,12 +12,12 @@ const moodSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ["Trabajo", "Familia", "Amigos", "Salud", "Amor", "Finanzas", "Estudio", "Otros", "Sin clasificar"],
+        enum: ["Trabajo💼", "Familia🧑‍🧑‍🧒", "Amigos🫂", "Salud🩺", "Amor💌", "Finanzas💰", "Estudio📝", "Otros", "Sin clasificar"],
         default: "Sin clasificar",
     },
     emotion: {
         type: String,
-        enum: ["Miedo", "Ira", "Disgusto", "Sorpresa", "Felicidad", "Tristeza", "Sin clasificar"],
+        enum: ["Miedo😨", "Ira😡", "Disgusto🫤", "Sorpresa😲", "Felicidad🙂", "Tristeza😢", "Sin clasificar"],
         default: "Sin clasificar",
     },
     createdAt: {
