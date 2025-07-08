@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 const MoodFilters = ({ onFilter }) => {
-  const [tag, setTag] = useState("");
+  const [category, setCategory] = useState("");
+  const [emotion, setEmotion] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -13,11 +14,12 @@ const MoodFilters = ({ onFilter }) => {
       alert("La fecha de fin no puede ser anterior a la fecha de inicio.");
       return;
     }
-    onFilter({ tag, startDate, endDate });
+    onFilter({ category, emotion, startDate, endDate });
   };
 
   const clearFilters = () => {
-    setTag("");
+    setCategory("");
+    setEmotion("");
     setStartDate("");
     setEndDate("");
     onFilter({});
@@ -29,19 +31,34 @@ const MoodFilters = ({ onFilter }) => {
       className="flex items-center flex-col lg:flex-row gap-5 bg-base-200 p-4 rounded-lg shadow mt-4"
     >
       <select
-        value={tag}
-        onChange={(e) => setTag(e.target.value)}
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
         className="select select-bordered w-full lg:w-auto"
       >
-        <option value="">Todos los tags</option>
-        <option value="Trabajo">Trabajo</option>
-        <option value="Familia">Familia</option>
-        <option value="Salud">Salud</option>
+        <option value="">Todas las categorias</option>
+        <option value="Trabajo💼">Trabajo💼</option>
+        <option value="Familia🧑‍🧑‍🧒">Familia🧑‍🧑‍🧒</option>
+        <option value="Salud🩺">Salud🩺</option>
+        <option value="Amigos🫂">Amigos🫂</option>
+        <option value="Amor💌">Amor💌</option>
+        <option value="Finanzas💰">Finanzas💰</option>
+        <option value="Estudio📝">Estudio📝</option>
         <option value="Otros">Otros</option>
-        <option value="Amigos">Amigos</option>
-        <option value="Amor">Amor</option>
-        <option value="Finanzas">Finanzas</option>
-        <option value="Estudio">Estudio</option>
+        <option value="Sin clasificar">Sin clasificar</option>
+      </select>
+
+      <select
+        value={emotion}
+        onChange={(e) => setEmotion(e.target.value)}
+        className="select select-bordered w-full lg:w-auto"
+      >
+        <option value="">Todas las emociones</option>
+        <option value="Felicidad🙂">Felicidad🙂</option>
+        <option value="Tristeza😢">Tristeza😢</option>
+        <option value="Ira😡">Ira😡</option>
+        <option value="Miedo😨">Miedo😨</option>
+        <option value="Disgusto🫤">Disgusto🫤</option>
+        <option value="Sorpresa😲">Sorpresa😲</option>
         <option value="Sin clasificar">Sin clasificar</option>
       </select>
 

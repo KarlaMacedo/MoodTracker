@@ -26,7 +26,7 @@ const MoodList = ({ moods, onEdit, onDelete }) => {
               </div>
               <div className="flex flex-col items-center">
                 <div>
-                  <p className="text-sm text-gray-600"><span className="font-semibold">{mood.tag} ·</span> {new Date(mood.createdAt).toLocaleString()}</p>
+                  <p className="text-sm text-gray-600"><span className="font-semibold">{mood.category} · {mood.emotion} ·</span> {new Date(mood.createdAt).toLocaleString()}</p>
                 </div>
                 <div className="flex justify-center gap-5 mt-4">
                   {mood.text.length > 50 && (

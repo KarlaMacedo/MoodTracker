@@ -6,7 +6,7 @@ const ViewMoodModal = ({ mood, onClose }) => {
       <div className="modal-box">
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-500/50">
           <div className="bg-base-100 p-6 rounded-lg w-full max-w-md shadow-lg">
-            <p className="font-bold text-lg mb-2">⭐ {mood.tag}</p>
+            <p className="font-bold text-lg mb-2">⭐ {mood.category}  ·  {mood.emotion}</p>
             <p className="text-sm text-gray-500 mb-4!">{new Date(mood.createdAt).toLocaleString()}</p>
             <p className="whitespace-pre-line">{mood.text}</p>
 
