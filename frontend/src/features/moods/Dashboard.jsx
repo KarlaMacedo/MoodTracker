@@ -34,7 +34,7 @@ const Dashboard = () => {
           startDate: filters.startDate,
           endDate: filters.endDate,
           page: pagination.currentPage,
-          limit: 6,
+          limit: 10,
         },
       });
 
