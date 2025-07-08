@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const MoodFormModal = ({ mood, onSaved, onClose }) => {
+const MoodFormModal = ({ mood, onSaved, onClose, openSecondary }) => {
   const [text, setText] = useState(mood?.text || "");
   const [category, setCategory] = useState(mood?.category || "Sin clasificar");
   const [emotion, setEmotion] = useState(mood?.emotion || "Sin clasificar");
@@ -76,6 +76,17 @@ const MoodFormModal = ({ mood, onSaved, onClose }) => {
                 <option>Disgusto🫤</option>
                 <option>Sorpresa😲</option>
               </select>
+
+              <p className="text-sm text-center text-gray-600">
+                ¿No sabes cuál es tu emoción?{" "}
+                <button
+                  type="button"
+                  className="link text-primary font-bold!"
+                  onClick={() => openSecondary("emotion-wheel")}
+                >
+                  Identifícala!
+                </button>
+              </p>
 
               <div className="flex justify-end gap-2 mt-4">
                 <button type="button" onClick={onClose} className="btn btn-outline">
