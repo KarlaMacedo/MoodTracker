@@ -10,9 +10,14 @@ const moodSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    tag: {
+    category: {
         type: String,
         enum: ["Trabajo", "Familia", "Amigos", "Salud", "Amor", "Finanzas", "Estudio", "Otros", "Sin clasificar"],
+        default: "Sin clasificar",
+    },
+    emotion: {
+        type: String,
+        enum: ["Miedo", "Ira", "Disgusto", "Sorpresa", "Felicidad", "Tristeza", "Sin clasificar"],
         default: "Sin clasificar",
     },
     createdAt: {

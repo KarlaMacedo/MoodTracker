@@ -72,7 +72,9 @@ paths:
                   type: string
                 text:
                   type: string
-                tag:
+                category:
+                  type: string
+                emotion:
                   type: string
       responses:
         201:
@@ -83,7 +85,12 @@ paths:
     get:
       summary: Obtener todos los registros emocionales
       parameters:
-        - name: tag
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: emotion
           in: query
           required: false
           schema:
@@ -129,11 +136,13 @@ paths:
           application/json:
             schema:
               type: object
-              required: [text, tag]
+              required: [text, category, emotion]
               properties:
                 text:
                   type: string
-                tag:
+                category:
+                  type: string
+                emotion:
                   type: string
       responses:
         200:
@@ -186,7 +195,9 @@ paths:
             type: string
           username:
             type: string
-          tag:
+          category:
+            type: string
+          emotion:
             type: string
           createdAt:
             type: date-time
