@@ -14,7 +14,8 @@ const Dashboard = () => {
     totalPages: 1,
   });
   const [filters, setFilters] = useState({
-    tag: "",
+    category: "",
+    emotion: "",
     startDate: "",
     endDate: "",
   });
@@ -30,7 +31,8 @@ const Dashboard = () => {
     try {
       const { data } = await api.get("/mood", {
         params: {
-          tag: filters.tag,
+          category: filters.category,
+          emotion: filters.emotion,
           startDate: filters.startDate,
           endDate: filters.endDate,
           page: pagination.currentPage,
@@ -53,7 +55,7 @@ const Dashboard = () => {
   }, [fetchMoods]);
 
   const handleAddMood = () => {
-    openModal("add", { text: "", tag: "Sin clasificar" }, async (newMood) => {
+    openModal("add", { text: "", category: "Sin clasificar", emotion: "Sin clasificar" }, async (newMood) => {
       await api.post("/mood", newMood);
       fetchMoods();
       showAlert("Registro emocional creado exitosamente");

@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 
 const MoodFormModal = ({ mood, onSaved, onClose }) => {
   const [text, setText] = useState(mood?.text || "");
-  const [tag, setTag] = useState(mood?.tag || "Sin clasificar");
+  const [category, setCategory] = useState(mood?.category || "Sin clasificar");
+  const [emotion, setEmotion] = useState(mood?.emotion || "Sin clasificar");
 
   useEffect(() => {
     setText(mood?.text || "");
-    setTag(mood?.tag || "Sin clasificar");
+    setCategory(mood?.category || "Sin clasificar");
+    setEmotion(mood?.emotion || "Sin clasificar");
   }, [mood]);
 
   const handleSubmit = (e) => {
@@ -16,7 +18,8 @@ const MoodFormModal = ({ mood, onSaved, onClose }) => {
     const moodToSave = {
       ...mood,
       text: text.trim(),
-      tag,
+      category,
+      emotion
     };
 
     onSaved(moodToSave);
@@ -40,22 +43,38 @@ const MoodFormModal = ({ mood, onSaved, onClose }) => {
                 required
               ></textarea>
               <p className="text-xl font-bold mb-4">
-                Tag:
+                Categoría:
               </p>
               <select
-                value={tag}
-                onChange={(e) => setTag(e.target.value)}
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
                 className="select select-bordered"
               >
                 <option>Sin clasificar</option>
-                <option>Trabajo</option>
-                <option>Familia</option>
-                <option>Salud</option>
-                <option>Amigos</option>
-                <option>Amor</option>
-                <option>Finanzas</option>
-                <option>Estudio</option>
+                <option>Trabajo💼</option>
+                <option>Familia🧑‍🧑‍🧒</option>
+                <option>Salud🩺</option>
+                <option>Amigos🫂</option>
+                <option>Amor💌</option>
+                <option>Finanzas💰</option>
+                <option>Estudio📝</option>
                 <option>Otros</option>
+              </select>
+              <p className="text-xl font-bold mb-4">
+                Emoción:
+              </p>
+              <select
+                value={emotion}
+                onChange={(e) => setEmotion(e.target.value)}
+                className="select select-bordered"
+              >
+                <option>Sin clasificar</option>
+                <option>Felicidad🙂</option>
+                <option>Tristeza😢</option>
+                <option>Ira😡</option>
+                <option>Miedo😨</option>
+                <option>Disgusto🫤</option>
+                <option>Sorpresa😲</option>
               </select>
 
               <div className="flex justify-end gap-2 mt-4">
