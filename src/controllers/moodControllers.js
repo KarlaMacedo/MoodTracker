@@ -3,8 +3,8 @@ import { fromZonedTime } from "date-fns-tz";
 
 export const createMood = async (req, res) => {
     try {
-        const { text, tag } = req.body;
-        const mood = await Mood.create({ user: req.user._id, text, tag });
+        const { text, category, emotion } = req.body;
+        const mood = await Mood.create({ user: req.user._id, text, category, emotion });
         res.status(201).json(mood);
     } catch (error) {
         console.error(error);
@@ -14,14 +14,16 @@ export const createMood = async (req, res) => {
 
 export const getMoods = async (req, res) => {
     try {
-        const { tag, startDate, endDate, page = 1, limit = 10 } = req.query;
+        const { emotion, category, startDate, endDate, page = 1, limit = 10 } = req.query;
 
         const query = { user: req.user._id };
         const timeZone = 'America/Mexico_City';
 
         console.log("Query recibido:", req.query);
 
-        if (tag) query.tag = tag;
+        if (category) query.category = category;
+
+        if (emotion) query.emotion = emotion;
 
         if (startDate || endDate) {
             query.createdAt = {};
@@ -65,10 +67,10 @@ export const getMoods = async (req, res) => {
 
 export const updateMood = async (req, res) => {
     try {
-        const { text, tag } = req.body;
+        const { text, category, emotion } = req.body;
         const updateMood = await Mood.findOneAndUpdate(
             { user: req.user._id, _id: req.params.id },
-            { text, tag }, { new: true }
+            { text, category, emotion }, { new: true }
         );
 
         if (!updateMood) {
