@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from "../../api/api";
+import { Link } from "react-router-dom";
 
 function Register({ onRegisterSuccess }) {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
@@ -37,7 +38,7 @@ function Register({ onRegisterSuccess }) {
             type="text"
             name="username"
             placeholder="Nombre de usuario"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full m-8"
             value={form.username}
             onChange={handleChange}
             required
@@ -65,6 +66,9 @@ function Register({ onRegisterSuccess }) {
             {loading ? "Registrando..." : "Registrarse"}
           </button>
         </form>
+        <p className="mt-4 text-center text-sm">
+          ¿Ya tienes cuenta? <Link to="/login" className="text-primary underline">Inicia sesión</Link>
+        </p>
       </div>
     </div>
   );

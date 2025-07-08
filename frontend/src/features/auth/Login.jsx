@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from "../../api/api.js";
+import { Link } from "react-router-dom";
 
 function Login({ onLoginSuccess }) {
   const [email, setEmail] = useState("");
@@ -13,7 +14,7 @@ function Login({ onLoginSuccess }) {
     try {
       const res = await api.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
-      onLoginSuccess(); // callback para redirigir o cambiar vista
+      onLoginSuccess();
     } catch (err) {
       console.error("Error login:", err);
       setErrorMsg(err.response?.data?.message || "Error al iniciar sesión");
@@ -46,6 +47,9 @@ function Login({ onLoginSuccess }) {
             Iniciar sesión
           </button>
         </form>
+        <p className="mt-4 text-center text-sm">
+          ¿No tienes cuenta? <Link to="/register" className="text-primary underline">Regístrate</Link>
+        </p>
       </div>
     </div>
   );
