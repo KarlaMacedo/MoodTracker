@@ -146,7 +146,9 @@ npm run dev
 - Ver en lista paginada
 
 ### ✅ Filtros
-- Filtrado por categoría (tag)
+- Filtrado por categoría (category)
+
+- Filtrado por emoción (emotion)
 
 - Rango de fechas con validación
 
