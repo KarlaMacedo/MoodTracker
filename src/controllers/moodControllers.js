@@ -1,5 +1,5 @@
 import Mood from "../models/Mood.js";
-import { zonedTimeToUtc } from "date-fns-tz";
+import { fromZonedTime } from "date-fns-tz";
 
 export const createMood = async (req, res) => {
     try {
@@ -27,12 +27,12 @@ export const getMoods = async (req, res) => {
             query.createdAt = {};
 
             if (startDate) {
-                const start = zonedTimeToUtc(`${startDate}T00:00:00`, timeZone);
+                const start = fromZonedTime(`${startDate}T00:00:00`, timeZone);
                 query.createdAt.$gte = start;
             }
 
             if (endDate) {
-                const end = zonedTimeToUtc(`${endDate}T23:59:59`, timeZone);
+                const end = fromZonedTime(`${endDate}T23:59:59`, timeZone);
                 query.createdAt.$lte = end;
             }
         }
