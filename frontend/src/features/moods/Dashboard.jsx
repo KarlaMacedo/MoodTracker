@@ -111,6 +111,7 @@ const Dashboard = () => {
 
           <MoodList moods={moods} onEdit={handleMoodEdited} onDelete={handleMoodDeleted} />
 
+          {/* Paginación */}
           <div className="mt-4 flex justify-between">
             <button
               onClick={() =>
