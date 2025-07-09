@@ -86,55 +86,65 @@ const Stats = () => {
 
                 <StatsFilters onFilter={setFilters} />
 
-                {/* GRÁFICAS */}
-                <div className="h-full w-full flex justify-center">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl w-full">
-                        <div className="bg-white rounded-xl shadow p-4 h-80">
-                            <p className="text-lg font-semibold text-center mb-6!">Emociones predominantes</p>
-                            <Bar
-                                data={emotionChart}
-                                options={{
-                                    plugins: {
-                                        legend: { display: false },
-                                    },
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                }}
-                            />
-                        </div>
+                {data.length === 0 && (
+                    <>
+                        <p className="text-2xl font-bold mb-17! text-center">No hay registros emocionales</p>
+                    </>
+                )}
 
-                        <div className="bg-white rounded-xl shadow p-4 mb-6">
-                            <p className="text-lg font-semibold text-center mb-6!">Porcentaje por emoción</p>
-                            <Pie
-                                data={emotionChart}
-                                options={{
-                                    plugins: {
-                                        legend: {
-                                            display: true,
-                                            position: "top",
-                                            labels: {
-                                                color: "#444",
-                                                boxWidth: 20,
-                                                padding: 10
-                                            }
-                                        },
-                                        datalabels: {
-                                            color: "#444",
-                                            font: {
-                                                weight: "bold",
+                {data.length > 0 && (
+                    <>
+                        {/* GRÁFICAS */}
+                        <div className="h-full w-full flex justify-center">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl w-full">
+                                <div className="bg-white rounded-xl shadow p-4 h-80">
+                                    <p className="text-lg font-semibold text-center mb-6!">Emociones predominantes</p>
+                                    <Bar
+                                        data={emotionChart}
+                                        options={{
+                                            plugins: {
+                                                legend: { display: false },
                                             },
-                                            formatter: (value, context) => {
-                                                const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                                                const percentage = ((value / total) * 100).toFixed(1);
-                                                return `${percentage}%`;
+                                            responsive: true,
+                                            maintainAspectRatio: false,
+                                        }}
+                                    />
+                                </div>
+
+                                <div className="bg-white rounded-xl shadow p-4 mb-6">
+                                    <p className="text-lg font-semibold text-center mb-6!">Porcentaje por emoción</p>
+                                    <Pie
+                                        data={emotionChart}
+                                        options={{
+                                            plugins: {
+                                                legend: {
+                                                    display: true,
+                                                    position: "top",
+                                                    labels: {
+                                                        color: "#444",
+                                                        boxWidth: 20,
+                                                        padding: 10
+                                                    }
+                                                },
+                                                datalabels: {
+                                                    color: "#444",
+                                                    font: {
+                                                        weight: "bold",
+                                                    },
+                                                    formatter: (value, context) => {
+                                                        const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                                        const percentage = ((value / total) * 100).toFixed(1);
+                                                        return `${percentage}%`;
+                                                    },
+                                                },
                                             },
-                                        },
-                                    },
-                                }}
-                            />
+                                        }}
+                                    />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </>
+                )}
             </div>
         </>
     );
