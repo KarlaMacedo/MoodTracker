@@ -29,7 +29,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} />} />
       <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/register" element={<Register onRegisterSuccess={() => navigate("/dashboard")} />} />
       <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
       <Route path="/stats" element={<Stats />} />
     </Routes>
