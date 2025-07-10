@@ -184,8 +184,6 @@ npm run dev
 |DELETE	|/mood/:id	|Eliminar un mood|
 
 ## 🧠 Posibles mejoras a futuro
-- Gráficas estadísticas (con Chart.js)
-
 - Exportar moods como CSV o PDF
 
 - Notificaciones globales tipo toast
