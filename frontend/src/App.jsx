@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Login from './features/auth/Login.jsx';
 import Register from './features/auth/Register.jsx';
 import Dashboard from './features/moods/Dashboard.jsx';
+import Stats from './features/moods/Stats.jsx';
 
 function App() {
   const token = localStorage.getItem("token");
@@ -30,6 +31,7 @@ function App() {
       <Route path="/login" element={<Login onLoginSuccess={handleLoginSuccess} />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} />
+      <Route path="/stats" element={<Stats />} />
     </Routes>
   );
 }

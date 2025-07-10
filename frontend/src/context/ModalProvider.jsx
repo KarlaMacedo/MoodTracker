@@ -1,19 +1,24 @@
+// src/context/ModalProvider.jsx
 import { useState } from "react";
 import { ModalContext } from "./ModalContext";
 import DeleteMoodModal from "../components/modals/DeleteMoodModal";
 import MoodFormModal from "../components/modals/MoodFormModal";
-import ViewMoodModal from "../components/modals/ViewMoodModal";
+import EmotionsWheelModal from "../components/modals/EmotionsWheelModal";
 
 const ModalProvider = ({ children }) => {
-  const [modal, setModal] = useState(null);
+  const [modalStack, setModalStack] = useState([]);
 
-  const openModal = (type, data = null, onConfirm = null) =>
-    setModal({ type, data, onConfirm });
+  const openModal = (type, data = null, onConfirm = null) => {
+    setModalStack((prev) => [...prev, { type, data, onConfirm }]);
+  };
 
-  const closeModal = () => setModal(null);
+  const closeModal = () => {
+    setModalStack((prev) => prev.slice(0, -1));
+  };
 
   const renderModal = () => {
-    if (!modal) return null;
+    if (!modalStack.length) return null;
+    const modal = modalStack[modalStack.length - 1];
 
     switch (modal.type) {
       case "add":
@@ -26,6 +31,7 @@ const ModalProvider = ({ children }) => {
               if (modal.onConfirm) await modal.onConfirm(newMood);
               closeModal();
             }}
+            openSecondary={(secondaryType) => openModal(secondaryType, modal)}
           />
         );
       case "delete":
@@ -39,12 +45,9 @@ const ModalProvider = ({ children }) => {
             }}
           />
         );
-      case "view":
+      case "emotion-wheel":
         return (
-          <ViewMoodModal
-            mood={modal.data}
-            onClose={closeModal}
-          />
+          <EmotionsWheelModal onClose={closeModal} />
         );
       default:
         return null;
@@ -52,7 +55,7 @@ const ModalProvider = ({ children }) => {
   };
 
   return (
-    <ModalContext.Provider value={{ modal, openModal, closeModal }}>
+    <ModalContext.Provider value={{ openModal, closeModal }}>
       {children}
       {renderModal()}
     </ModalContext.Provider>
