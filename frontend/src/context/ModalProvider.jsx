@@ -4,6 +4,7 @@ import { ModalContext } from "./ModalContext";
 import DeleteMoodModal from "../components/modals/DeleteMoodModal";
 import MoodFormModal from "../components/modals/MoodFormModal";
 import EmotionsWheelModal from "../components/modals/EmotionsWheelModal";
+import ViewMoodModal from "../components/modals/ViewMoodModal";
 
 const ModalProvider = ({ children }) => {
   const [modalStack, setModalStack] = useState([]);
@@ -48,6 +49,13 @@ const ModalProvider = ({ children }) => {
       case "emotion-wheel":
         return (
           <EmotionsWheelModal onClose={closeModal} />
+        );
+      case "view":
+        return (
+          <ViewMoodModal
+            mood={modal.data}
+            onClose={closeModal}
+          />
         );
       default:
         return null;
