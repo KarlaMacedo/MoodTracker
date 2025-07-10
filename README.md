@@ -1,6 +1,6 @@
 # 🧠 Mood Tracker App – Fullstack MERN
 
-Una aplicación web para registrar y reflexionar sobre tu estado emocional diario. Desarrollada con el stack **MERN (MongoDB, Express, React, Node.js)**, con un diseño limpio, responsivo y profesional. Permite agregar, editar, filtrar y eliminar moods (emociones) de forma segura y amigable.
+Una aplicación web para registrar y reflexionar sobre tu estado emocional diario. Desarrollada con el stack **MERN (MongoDB, Express, React, Node.js)**, con un diseño limpio, responsivo y profesional. Permite agregar, editar, filtrar y eliminar moods (emociones) de forma segura y amigable. Además de visualizar tus emociones con herramientas gráficas descargables que te ayudan a conocerte mejor.
 
 ---
 
@@ -14,6 +14,7 @@ Una aplicación web para registrar y reflexionar sobre tu estado emocional diari
 | Routing     | React Router DOM                   |
 | Estilos     | TailwindCSS + DaisyUI              |
 | Estado global | Context API (para modales)      |
+| Gráficas      | Chart.js + chartjs-plugin-datalabels |
 
 ---
 
@@ -71,7 +72,9 @@ npm run dev
 │   │   ├── components/
 │   │   │   ├── modals/
 │   │   │   │   ├── DeleteMoodModal.jsx
-│   │   │   │   └── MoodFormModal.jsx
+│   │   │   │   ├── EmotionsWheelModal.jsx
+│   │   │   │   ├── MoodFormModal.jsx
+│   │   │   │   └── ViewMoodModal.jsx
 │   │   │   ├── Alert.jsx
 │   │   │   └── Navbar.jsx
 │   │   ├── context/
@@ -84,7 +87,9 @@ npm run dev
 │   │   │   └── moods/
 │   │   │       ├── Dashboard.jsx
 │   │   │       ├── MoodFilters.jsx
-│   │   │       └── MoodList.jsx
+│   │   │       ├── MoodList.jsx
+│   │   │       ├── Stats.jsx
+│   │   │       └── StatsFilters.jsx
 │   │   ├── hooks/
 │   │   ├── utils/
 │   │   ├── App.css
@@ -143,7 +148,7 @@ npm run dev
 
 - Editar o eliminar emociones existentes
 
-- Ver en lista paginada
+- Ver en lista de moods paginada
 
 ### ✅ Filtros
 - Filtrado por categoría (category)
@@ -154,10 +159,20 @@ npm run dev
 
 - Botón para limpiar filtros fácilmente
 
+### ✅ Estadísticas emocionales (gráficas)
+Visualización de:
+- Emociones predominantes (gráfica de barras)
+
+- Distribución porcentual de emociones (gráfica de pastel)
+
+- Filtros aplicables sobre las gráficas
+
+- Descarga de gráficas como imagen PNG
+
 ### ✅ Modales centralizados
 - Uso de ModalContext + ModalProvider para manejar todos los modales del sistema
 
-- Modales dinámicos reutilizables para crear, editar y eliminar moods
+- Modales dinámicos reutilizables para crear, editar, eliminar y ver moods
 
 ### ✅ UX/UI profesional
 - Diseño responsive y minimalista con Tailwind + DaisyUI
@@ -185,6 +200,10 @@ npm run dev
 
 ## 🧠 Posibles mejoras a futuro
 - Exportar moods como CSV o PDF
+
+- Timeline visual e interactivo
+
+- Integrar con calendario
 
 - Notificaciones globales tipo toast
 
