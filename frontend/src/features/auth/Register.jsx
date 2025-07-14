@@ -29,8 +29,12 @@ function Register({ onRegisterSuccess }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-base-200">
-      <div className="w-full max-w-sm p-6 bg-white rounded-xl shadow-xl">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-base-200">
+      <p className="text-5xl font-bold mb-20! text-center text-primary">
+        ⭐ MoodTracker
+      </p>
+
+      <div className="w-full max-w-sm p-6 bg-white rounded-xl shadow-xl mb-20">
         
         {errorMsg && <div className="alert alert-error mb-4">{errorMsg}</div>}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4  mb-4">
